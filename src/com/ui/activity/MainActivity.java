@@ -63,7 +63,6 @@ public class MainActivity extends ActionBarActivity {
 				parameters.put("cduMail", cduName.getText().toString());
 				parameters.put("cduPass", cduPass.getText().toString());
 				
-				
 				new HttpHandler(v).execute(parameters);
 				
 			}

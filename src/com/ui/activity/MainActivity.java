@@ -3,7 +3,10 @@ package com.ui.activity;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -16,6 +19,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.qr_market_android.R;
 import com.util.HttpHandler;
@@ -42,19 +47,24 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.login);
 		
 		Button button = (Button) findViewById(R.id.Button01);
-		final EditText name = (EditText) findViewById(R.id.editText1);
-		
-		
-		
+		final EditText cduName = (EditText) findViewById(R.id.editText1);
+		final EditText cduPass = (EditText) findViewById(R.id.editText2);
+					
 		button.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-												
-				name.setText("Deneme");				
-														
+																		
 				
-				new MyAsyncTask().execute("Deneme");							
+				//new MyAsyncTask().execute("Deneme");	
+				
+				Map parameters = new HashMap();
+				parameters.put("authDo", "carpeLogin");
+				parameters.put("cduMail", cduName.getText().toString());
+				parameters.put("cduPass", cduPass.getText().toString());
+				
+				
+				new HttpHandler(v).execute(parameters);
 				
 			}
 		});
@@ -102,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
 			String res="";
 			// Create a new HttpClient and Post Header
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost("http://10.0.2.2:8080/QR_Market_Web/Auth");
+			HttpPost httppost = new HttpPost("http://10.0.2.2:8080/QR_Market_Web/Auth?authDo=carpeLogin&cduMail=kskaraca@gmail.com&cduPass=12345");
  
 			try {
 				// Add your data
@@ -118,7 +128,23 @@ public class MainActivity extends ActionBarActivity {
 			    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
 			        ByteArrayOutputStream out = new ByteArrayOutputStream();
 			        response.getEntity().writeTo(out);
-			        res = out.toString();
+			        
+			        responseStr = out.toString();			        
+			        try {			        	
+						JSONObject reader = new JSONObject(responseStr);
+						Iterator iterator = reader.keys();
+						while(iterator.hasNext()){
+							String key = (String)iterator.next();
+							Log.i("JSON KEY" , key);
+							
+						}
+						
+						
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			        
 			        Log.i("RESPONSE" , responseStr);
 			        

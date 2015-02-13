@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import com.example.qr_market_android.R;
 import com.util.HttpHandler;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,17 +55,17 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-																		
-				
-				//new MyAsyncTask().execute("Deneme");	
-				
+
+
 				Map parameters = new HashMap();
 				parameters.put("authDo", "carpeLogin");
 				parameters.put("cduMail", cduName.getText().toString());
 				parameters.put("cduPass", cduPass.getText().toString());
 				
-				new HttpHandler(v).execute(parameters);
-				
+				new HttpHandler(getApplicationContext()).execute(parameters);
+
+
+
 			}
 		});
 		
@@ -90,84 +91,5 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	
-	
-	
-	private class MyAsyncTask extends AsyncTask<String, Integer, String>{
-		 
-		@Override
-		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			return postData(params[0]);
-			
-		}
-		
-		@Override
-	    protected void onPostExecute(String result) {
-			((EditText) findViewById(R.id.editText1)).setText(result);
-	    }
- 
-		public String postData(String valueIWantToSend) {
-			String res="";
-			// Create a new HttpClient and Post Header
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost("http://10.0.2.2:8080/QR_Market_Web/Auth?authDo=carpeLogin&cduMail=kskaraca@gmail.com&cduPass=12345");
- 
-			try {
-				// Add your data
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("myHttpData", valueIWantToSend));
-				httppost.setEntity((HttpEntity) new UrlEncodedFormEntity(nameValuePairs));				
-				
-				// Execute HTTP Post Request
-				HttpResponse response = httpclient.execute(httppost);
-				
-				
-				StatusLine statusLine = response.getStatusLine();
-			    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-			        ByteArrayOutputStream out = new ByteArrayOutputStream();
-			        response.getEntity().writeTo(out);
-			        
-			        responseStr = out.toString();			        
-			        try {			        	
-						JSONObject reader = new JSONObject(responseStr);
-						Iterator iterator = reader.keys();
-						while(iterator.hasNext()){
-							String key = (String)iterator.next();
-							Log.i("JSON KEY" , key);
-							
-						}
-						
-						
-						
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			        
-			        Log.i("RESPONSE" , responseStr);
-			        
-			        	
-			        
-			    } else{
-			        //Closes the connection.
-			        response.getEntity().getContent().close();
-			        throw new IOException(statusLine.getReasonPhrase());
-			    }
-				
- 
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-			}
-			
-			return res;
-		}
- 
-	}
-	
-	
-	
-	
+
 }

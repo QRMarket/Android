@@ -26,8 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.qr_market_android.R;
+import com.ui.activity.MainActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView.FindListener;
@@ -36,9 +39,12 @@ import android.widget.EditText;
 public class HttpHandler extends AsyncTask< Map , Integer, String> {
 	
 	public String responseStr = "Celal Selcuk";
-	
-	public HttpHandler(View v){
-		
+
+    protected Context context;
+    protected JSONObject result;
+
+	public HttpHandler(Context context){
+		this.context = context;
 	}
 
 	@Override
@@ -48,8 +54,9 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 	}
 	
 	@Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(String resultStr) {
 		Log.i("HttpHandler" , "onPostExecute called...");
+
     }
 	
 	
@@ -85,28 +92,34 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 			if(statusLine.getStatusCode() == HttpStatus.SC_OK){
 		        ByteArrayOutputStream out = new ByteArrayOutputStream();
 		        response.getEntity().writeTo(out);
-		        
-		               
-		        
+
 		        responseStr = out.toString();
-		        
+
 		        try {
-		        	
-					JSONObject reader = new JSONObject(responseStr);
-					Iterator iterator = reader.keys();
+
+                    result = new JSONObject(responseStr);
+					Iterator iterator = result.keys();
 					while(iterator.hasNext()){
 						String key = (String)iterator.next();
 						Log.i("JSON KEY" , key);
-						
+
 					}
-										
-					
+
+                    String resCode = (String) result.get("resultCode");
+                    if(resCode.equalsIgnoreCase("EBA.001")){
+
+                        EditText editText= (EditText)((MainActivity)context).findViewById(R.id.editText1);
+                        Log.i("RESPONSE" , editText.getText().toString() );
+                        //editText.setText(resCode);
+                    }else{
+
+                    }
+
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		        
-		        
 		        
 		        Log.i("RESPONSE" , responseStr);
 		        

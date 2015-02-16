@@ -25,10 +25,17 @@ import org.json.JSONObject;
 import com.example.qr_market_android.R;
 import com.util.HttpHandler;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,16 +44,25 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-	public String responseStr="xxx";
+	public String responseStr="xxx";	
+	public static EditText editTextExample;
+	public View vi;	
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		
+		
+		Button twitter = (Button) findViewById(R.id.twitter);
+		
+		vi = this.getWindow().getDecorView().findViewById(android.R.id.content);
+
 		Button button = (Button) findViewById(R.id.Login);
 		final EditText cduName = (EditText) findViewById(R.id.LoginUserName);
 		final EditText cduPass = (EditText) findViewById(R.id.LoginPassword);
@@ -54,23 +70,33 @@ public class MainActivity extends ActionBarActivity {
 		button.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 
 				Map parameters = new HashMap();
 				parameters.put("authDo", "carpeLogin");
 				parameters.put("cduMail", cduName.getText().toString());
 				parameters.put("cduPass", cduPass.getText().toString());
 				
-				new HttpHandler(getApplicationContext()).execute(parameters);
-
-
+				//new HttpHandler(vi).execute(parameters);
+				
+				goToMarketActivity();
 
 			}
 		});
 		
+		twitter.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				createAlarm("Deneme" , 6 , 2);
+
+			}
+		});
 		
+				
+				
 	}
+		
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +116,26 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	public void goToMarketActivity(){
+		Intent intent = new Intent(this,MarketActivity.class);
+		startActivity(intent);
+	}
+	
+	
+		
+ 	public void createAlarm(String message, int hour, int minutes) {
+	    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+	            .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+	            .putExtra(AlarmClock.EXTRA_HOUR, hour)
+	            .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+	    if (intent.resolveActivity(getPackageManager()) != null) {
+	        startActivity(intent);
+	    }
+	}
+	
+	
 	
 
 }

@@ -22,8 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.ui.activity.MarketActivity"
+            android:label="@string/title_activity_market" >
+        </activity>
     </application>
-    
+
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -28,7 +28,9 @@ import org.json.JSONObject;
 import com.example.qr_market_android.R;
 import com.ui.activity.MainActivity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -41,22 +43,24 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 	public String responseStr = "Celal Selcuk";
 
     protected Context context;
+    protected View view;
     protected JSONObject result;
 
-	public HttpHandler(Context context){
-		this.context = context;
+	public HttpHandler(View v){
+		this.view = v;
 	}
 
 	@Override
 	protected String doInBackground(Map... params) {
-		// TODO Auto-generated method stub
-		return postData(params[0]);
+
+		Log.i("HttpHandler" , "doInBackground called...");
+		return postData(params[0]);						
+		
 	}
 	
 	@Override
     protected void onPostExecute(String resultStr) {
 		Log.i("HttpHandler" , "onPostExecute called...");
-
     }
 	
 	
@@ -72,6 +76,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 		}		
 		return nameValuePairs;		
 	}
+		
 	
 	public String postData(Map param) {			
 		
@@ -106,7 +111,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 					}
 
                     String resCode = (String) result.get("resultCode");
+                    Log.i("RESULT CODE" , resCode);
                     if(resCode.equalsIgnoreCase("EBA.001")){
+                    	
+                    	Log.i("RESULT CODE" , resCode);
 
                         EditText editText= (EditText)((MainActivity)context).findViewById(R.id.Login);
                         Log.i("RESPONSE" , editText.getText().toString() );

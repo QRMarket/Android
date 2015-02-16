@@ -32,12 +32,22 @@ public class MarketActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_market);
 		
 		Button qrReader = (Button) findViewById(R.id.barcode_reader);
+		Button barcode = (Button) findViewById(R.id.barcode);
 		
 		qrReader.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 
 				scanQR(v);
+
+			}
+		});
+		
+		barcode.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+
+				scanBar(v);
 
 			}
 		});

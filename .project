@@ -3,6 +3,8 @@
 	<name>QR_Market_Android</name>
 	<comment></comment>
 	<projects>
+		<project>appcompat_v7</project>
+		<project>RemoteSystemsTempFiles</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

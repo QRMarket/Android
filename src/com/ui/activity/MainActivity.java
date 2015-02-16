@@ -47,9 +47,9 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		
-		Button button = (Button) findViewById(R.id.Button01);
-		final EditText cduName = (EditText) findViewById(R.id.editText1);
-		final EditText cduPass = (EditText) findViewById(R.id.editText2);
+		Button button = (Button) findViewById(R.id.Login);
+		final EditText cduName = (EditText) findViewById(R.id.LoginUserName);
+		final EditText cduPass = (EditText) findViewById(R.id.LoginPassword);
 					
 		button.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.social_login) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

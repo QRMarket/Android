@@ -108,7 +108,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
                     String resCode = (String) result.get("resultCode");
                     if(resCode.equalsIgnoreCase("EBA.001")){
 
-                        EditText editText= (EditText)((MainActivity)context).findViewById(R.id.editText1);
+                        EditText editText= (EditText)((MainActivity)context).findViewById(R.id.Login);
                         Log.i("RESPONSE" , editText.getText().toString() );
                         //editText.setText(resCode);
                     }else{
